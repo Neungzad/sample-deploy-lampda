@@ -26,7 +26,7 @@ pipeline {
 
       stage('Build') {
         steps {
-          sh "zip ${commitID()}.zip ."
+          sh "zip -r ${commitID()}.zip ."
         }
       }
 
