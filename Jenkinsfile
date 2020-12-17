@@ -25,11 +25,15 @@ pipeline {
       }
 
       stage('Build') {
-        sh "zip ${commitID()}.zip ."
+        steps {
+          sh "zip ${commitID()}.zip ."
+        }
       }
 
       stage('Push'){
-        sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
+        steps {
+          sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
+        }
       }
   }
 }
