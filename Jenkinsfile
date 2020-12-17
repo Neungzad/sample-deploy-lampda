@@ -32,7 +32,10 @@ pipeline {
 
       stage('Push'){
         steps {
-          sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
+          withAWS(region: 'ap-southeast-1') {
+            s3Upload(bucket:"${bucket}", path:'', includePathPattern:'', workingDir:'./')
+          }
+          // sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
         }
       }
   }
