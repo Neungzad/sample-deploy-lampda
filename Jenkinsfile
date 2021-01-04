@@ -22,7 +22,7 @@ pipeline {
         steps {
           echo 'run test'
         }
-      }
+      } 
 
       stage('Build') {
         steps {
@@ -41,15 +41,20 @@ pipeline {
               // workingDir:'./'
             )
           }
-          // sh "aws s3 cp ${commitID()}.zip s3://${bucket}"
+        }
+      }
+
+      stage('Deploy Lambda'){
+        steps {
+
         }
       }
   }
 }
 
 def commitID() {
-    sh 'git rev-parse HEAD > .git/commitID'
-    def commitID = readFile('.git/commitID').trim()
-    sh 'rm .git/commitID'
-    commitID
+    // sh 'git rev-parse HEAD > .git/commitID'
+    // def commitID = readFile('.git/commitID').trim()
+    // sh 'rm .git/commitID'
+    'bundle'
 }
