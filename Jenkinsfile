@@ -29,8 +29,8 @@ pipeline {
           withAWS(region: 'ap-southeast-1') {
             s3Upload(
               bucket:"${bucket}",
-              // file: "${commitID()}.zip",
-              path:"lambda/${commitID()}.zip",
+              file: "${commitID()}.zip",
+              path:"lambda/",
               // includePathPattern:'',
               workingDir:'./'
             )
