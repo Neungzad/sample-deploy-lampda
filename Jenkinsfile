@@ -16,7 +16,7 @@ pipeline {
       //   steps {
       //     echo 'run test'
       //   }
-      // } 
+      // }
 
       stage('Zip File') {
         steps {
@@ -24,15 +24,15 @@ pipeline {
         }
       }
 
-      stage('Upload to S3'){
+      stage('Upload to S3') {
         steps {
           withAWS(region: 'ap-southeast-1') {
             s3Upload(
-              bucket:"${bucket}", 
+              bucket:"${bucket}",
               file: "${commitID()}.zip",
-              path:'/lambda' 
-              // includePathPattern:'', 
-              // workingDir:'./'
+              path:'lambda',
+              // includePathPattern:'',
+              workingDir:'./'
             )
           }
         }
@@ -41,8 +41,8 @@ pipeline {
 }
 
 def commitID() {
-    // sh 'git rev-parse HEAD > .git/commitID'
-    // def commitID = readFile('.git/commitID').trim()
-    // sh 'rm .git/commitID'
-    'bundle'
+  // sh 'git rev-parse HEAD > .git/commitID'
+  // def commitID = readFile('.git/commitID').trim()
+  // sh 'rm .git/commitID'
+  'bundle'
 }
