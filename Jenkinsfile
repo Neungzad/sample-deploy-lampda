@@ -6,31 +6,25 @@ pipeline {
   agent any
 
   stages {
-      stage('Hello') {
-        steps {
-          echo 'Hello World ja'
-        }
-      }
-
       stage('Checkout') {
         steps {
           git 'https://github.com/Neungzad/sample-deploy-lampda.git'
         }
       }
 
-      stage('Test') {
-        steps {
-          echo 'run test'
-        }
-      } 
+      // stage('Run Unit Test') {
+      //   steps {
+      //     echo 'run test'
+      //   }
+      // } 
 
-      stage('Build') {
+      stage('Zip File') {
         steps {
           sh "zip -r ${commitID()}.zip ."
         }
       }
 
-      stage('Push'){
+      stage('Upload to S3'){
         steps {
           withAWS(region: 'ap-southeast-1') {
             s3Upload(
@@ -43,12 +37,6 @@ pipeline {
           }
         }
       }
-
-      // stage('Deploy Lambda'){
-      //   steps {
-
-      //   }
-      // }
   }
 }
 
