@@ -44,11 +44,11 @@ pipeline {
         }
       }
 
-      stage('Deploy Lambda'){
-        steps {
+      // stage('Deploy Lambda'){
+      //   steps {
 
-        }
-      }
+      //   }
+      // }
   }
 }
 
