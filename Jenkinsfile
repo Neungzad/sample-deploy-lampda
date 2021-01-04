@@ -1,6 +1,5 @@
 def bucket = 'alz-lambda-bucket'
-// def functionName = 'lambdaJa'
-// def region = 'eu-west-3'
+def bundleName = 'bundle'
 
 pipeline {
   agent any
@@ -20,7 +19,7 @@ pipeline {
 
       stage('Zip File') {
         steps {
-          sh "zip -r ${commitID()}.zip ."
+          sh "zip -r ${bundleName}.zip ."
         }
       }
 
@@ -29,20 +28,36 @@ pipeline {
           withAWS(region: 'ap-southeast-1') {
             s3Upload(
               bucket:"${bucket}",
-              file: "${commitID()}.zip",
-              path:"lambda/",
-              // includePathPattern:'',
+              file: "${bundleName}.zip",
+              path:'lambda/',
               workingDir:'./'
             )
           }
         }
       }
+
+      stage('Deploy lambda code') {
+        steps {
+          deployLambda([
+            alias: '',
+            artifactLocation: 's3://alz-lambda-bucket/lambda/bundle.zip',
+            awsAccessKeyId: '$AWS_ACCESS_KEY_ID',
+            awsRegion: '$AWS_DEFAULT_REGION',
+            awsSecretKey: '{AQAAABAAAAAgs2ZxJxdTUWZbMmk1k8M/d1Ki9nCKgqMgywJGZALWoLRxZRZ/W41de329qoPQ2bFM}',
+            deadLetterQueueArn: '',
+            description: 'Deploy driver es transformer',
+            environmentConfiguration: [kmsArn: ''],
+            functionName: 'parserData',
+            handler: 'lambda_function.lambda_handler',
+            memorySize: '1024',
+            role: 'arn:aws:iam::758354202054:role/lambda_deploy_role',
+            runtime: 'python3.8',
+            securityGroups: '',
+            subnets: '',
+            timeout: '60',
+            updateMode: 'full'])
+        }
+      }
   }
 }
 
-def commitID() {
-  // sh 'git rev-parse HEAD > .git/commitID'
-  // def commitID = readFile('.git/commitID').trim()
-  // sh 'rm .git/commitID'
-  'bundle'
-}
