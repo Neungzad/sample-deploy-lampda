@@ -18,7 +18,7 @@ pipeline {
 
       stage('Zip File') {
         steps {
-          sh 'pip install --target=./ -r requirements.txt'
+          sh 'pip3 install --target=./ -r requirements.txt'
           sh "zip -r ${bundleName}.zip ."
         }
       }
